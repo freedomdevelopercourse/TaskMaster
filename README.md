@@ -2,15 +2,15 @@
 
 ## Step 1 - Create Project
 
-- Make & Open folder for Project in VSCode
+### Make & Open folder for Project in VSCode
 
-- Create App `npm create vite@latest .` React -> TypeScript & SWC
+### Create App `npm create vite@latest .` React -> TypeScript & SWC
 
 ```
 npm i
 ```
 
-- Install Tailwind v4, TanStack Router & TanStack Query
+### Install Tailwind v4, TanStack Router & TanStack Query
 
 ```
 npm install @tanstack/react-router @tanstack/react-query tailwindcss @tailwindcss/vite
@@ -28,7 +28,7 @@ export default defineConfig({
 })
 ```
 
-- Setup TanStack & Tailwind
+### Setup TanStack & Tailwind
 
 2. Update main.tsx to import route tree and initialize Router & Query
 
@@ -64,7 +64,7 @@ createRoot(document.getElementById('root')!).render(
 5. Create src/routes/\_\_root.tsx
 6. Update \_\_root.tsx to use RootWithContext and add generic
 
-- Update Branding
+### Update Branding
 
 1. [Favicon Generator](https://www.favicon-generator.org/)
 2. Add contents to public folder & delete vite.svg
