@@ -1,10 +1,25 @@
-# TaskMaster
+# TaskMaster - Starter Project
 
 ## Step 1 - Create Project
 
 ### Make & Open folder for Project in VSCode
 
-### Create App `npm create vite@latest .` React -> TypeScript & SWC
+I generally go with a new folder in my home/developer folder
+
+### Create App
+
+1. Create
+
+```
+npm create vite@latest .
+```
+
+2. Follow Prompts
+   Name package `taskmaster`
+
+Select `React -> TypeScript & SWC`
+
+3. Install Dependencies
 
 ```
 npm i
@@ -12,10 +27,14 @@ npm i
 
 ### Install Tailwind v4, TanStack Router & TanStack Query
 
+1. Install the first packages we will use
+
 ```
 npm install @tanstack/react-router @tanstack/react-query tailwindcss @tailwindcss/vite
 npm install -D @tanstack/router-plugin
 ```
+
+2. Update the vite.config.ts with the plugins
 
 ```ts
 import { defineConfig } from 'vite'
@@ -259,6 +278,14 @@ npm run dev
 ### Finish Landing Page (Massive Dopamine Hit)
 
 Here we build the Landing page. Best course of action is follow the video to see how this is built. All of the code can be found on the course GitHub here: [TaskMaster](https://github.com/freedomdevelopercourse/TaskMaster)
+
+Here is an overview of building a Landing Page:
+
+1. Nav Bar
+2. Hero
+3. About/Etc
+4. Testimonials
+5. Footer
 
 ## Step 4 - Authentication
 
