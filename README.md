@@ -8,14 +8,15 @@ I generally go with a new folder in my home/developer folder
 
 ### Create App
 
-1. Create
+1. Create a TypeScript React Vite App
 
 ```
 npm create vite@latest .
 ```
 
 2. Follow Prompts
-   Name package `taskmaster`
+
+Name package `taskmaster`
 
 Select `React -> TypeScript & SWC`
 
