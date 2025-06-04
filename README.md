@@ -72,15 +72,103 @@ createRoot(document.getElementById('root')!).render(
 
 ## Step 2 - Connect Supabase
 
-- Create Supabase project
+### Create Supabase project
 
-- Install Supabase Client
+1. Sign in with GitHub
+2. Create an Organization
+3. Create new project (save DB Password somewhere safe even though we won't need it)
+4. Acquire Supabase URL & Anon Key
 
-- Create ENV File with URL & Key
+[Link to JS Supabase Docs](https://supabase.com/docs/reference/javascript/introduction)
 
-- Export instantiated client
+### Create ENV File with URL & Anon Key
 
-- Generate Types Script in package.json
+- Create `.env` in the root of the project & add .env to .gitignore
+- Be sure to prefix with VITE\_ so the client can access it
+
+```
+VITE_SUPABASE_URL=https://your-project.supabase.co
+VITE_SUPABASE_ANON_KEY=your-anon-key
+```
+
+### Install, Export & Generate Supabase Client & Types
+
+1. Install Client
+
+```
+npm install @supabase/supabase-js
+```
+
+2. Update vite types to acknowledge env file. (vite-env.d.ts)
+
+```ts
+/// <reference types="vite/client" />
+
+interface ViteTypeOptions {
+  strictImportMetaEnv: unknown
+}
+
+interface ImportMetaEnv {
+  readonly VITE_SUPABASE_URL: string
+  readonly VITE_SUPABASE_ANON_KEY: string
+}
+
+interface ImportMeta {
+  readonly env: ImportMetaEnv
+}
+```
+
+2. Export Client from src/api/Supabase.ts
+
+```ts
+import { createClient } from '@supabase/supabase-js'
+
+const supabase = createClient(import.meta.env.VITE_SUPABASE_URL, import.meta.env.VITE_SUPABASE_ANON_KEY)
+
+export default supabase
+```
+
+3. Generate Types Script in package.json
+
+- Update package.json scripts
+
+```
+ "gen": "supabase gen types typescript --project-id *PROJECT_ID* > src/types/database.types.ts",
+
+```
+
+- Install supabase as a dev dependency
+
+```
+npm i -D supabase
+```
+
+- Login
+
+```
+npx supabase login
+```
+
+- Create types folder inside src folder
+  Otherwise it can't find the types folder to generate them here: src/types/database.types.ts
+  as seen in the script
+
+- Generate the types
+
+```
+npm run gen
+```
+
+- Add Database type to Supabase.ts
+
+```ts
+import { createClient } from '@supabase/supabase-js'
+import type { Database } from '../types/database.types'
+
+const supabase = createClient<Database>(import.meta.env.VITE_SUPABASE_URL, import.meta.env.VITE_SUPABASE_ANON_KEY)
+
+export default supabase
+```
 
 ## Step 3 - Theme & Routes
 
