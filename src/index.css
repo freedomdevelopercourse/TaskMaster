@@ -1,1 +1,34 @@
 @import 'tailwindcss';
+
+@theme {
+  --color-background: oklch(12.5% 0.02 260);
+  --color-background-secondary: oklch(16.5% 0.02 260);
+  --color-background-tertiary: oklch(20.5% 0.02 260);
+  --color-foreground: oklch(90% 0.02 260);
+  --color-foreground-muted: oklch(70% 0.02 260);
+  --color-foreground-subtle: oklch(50% 0.03 260);
+  --color-primary: oklch(65% 0.2 265);
+  --color-primary-foreground: oklch(98% 0.01 260);
+  --color-primary-hover: oklch(60% 0.22 265);
+  --color-secondary: oklch(50% 0.03 260);
+  --color-secondary-foreground: oklch(98% 0.01 260);
+  --color-secondary-hover: oklch(45% 0.04 260);
+  --color-destructive: oklch(65% 0.25 25);
+  --color-destructive-foreground: oklch(98% 0.01 260);
+  --color-destructive-hover: oklch(60% 0.27 25);
+  --color-success: oklch(70% 0.2 145);
+  --color-success-foreground: oklch(98% 0.01 260);
+  --color-success-hover: oklch(65% 0.22 145);
+  --color-warning: oklch(75% 0.2 80);
+  --color-warning-foreground: oklch(98% 0.01 260);
+  --color-warning-hover: oklch(70% 0.22 80);
+  --color-border: oklch(22% 0.02 260);
+  --color-border-subtle: oklch(16.5% 0.02 260);
+  --color-ring: oklch(65% 0.2 265);
+  --color-ring-destructive: oklch(65% 0.25 25);
+}
+
+html,
+body {
+  @apply bg-background text-foreground min-w-dvh;
+}

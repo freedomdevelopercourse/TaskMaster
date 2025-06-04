@@ -70,6 +70,31 @@ createRoot(document.getElementById('root')!).render(
 2. Add contents to public folder & delete vite.svg
 3. Update index.html
 
+```html
+<head>
+  <meta charset="UTF-8" />
+  <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png" />
+  <link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png" />
+  <link rel="apple-touch-icon" sizes="72x72" href="/apple-icon-72x72.png" />
+  <link rel="apple-touch-icon" sizes="76x76" href="/apple-icon-76x76.png" />
+  <link rel="apple-touch-icon" sizes="114x114" href="/apple-icon-114x114.png" />
+  <link rel="apple-touch-icon" sizes="120x120" href="/apple-icon-120x120.png" />
+  <link rel="apple-touch-icon" sizes="144x144" href="/apple-icon-144x144.png" />
+  <link rel="apple-touch-icon" sizes="152x152" href="/apple-icon-152x152.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-icon-180x180.png" />
+  <link rel="icon" type="image/png" sizes="192x192" href="/android-icon-192x192.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+  <link rel="manifest" href="/manifest.json" />
+  <meta name="msapplication-TileColor" content="#ffffff" />
+  <meta name="msapplication-TileImage" content="/ms-icon-144x144.png" />
+  <meta name="theme-color" content="#ffffff" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TaskMaster</title>
+</head>
+```
+
 ## Step 2 - Connect Supabase
 
 ### Create Supabase project
@@ -170,15 +195,70 @@ const supabase = createClient<Database>(import.meta.env.VITE_SUPABASE_URL, impor
 export default supabase
 ```
 
-## Step 3 - Theme & Routes
+## Step 3 - Theme, Routes & Landing Page
 
-- Create css vars for colors
+### Create Theme
 
-- Set base styles
+1. Update index.css with an `@theme` and apply the background & foreground to `html` & `body`
 
-- Create Routes for Login, Signup, Landing & Dashboard
+```css
+@import 'tailwindcss';
 
-- Finish Landing Page
+@theme {
+  --color-background: oklch(12.5% 0.02 260);
+  --color-background-secondary: oklch(16.5% 0.02 260);
+  --color-background-tertiary: oklch(20.5% 0.02 260);
+  --color-foreground: oklch(90% 0.02 260);
+  --color-foreground-muted: oklch(70% 0.02 260);
+  --color-foreground-subtle: oklch(50% 0.03 260);
+  --color-primary: oklch(65% 0.2 265);
+  --color-primary-foreground: oklch(98% 0.01 260);
+  --color-primary-hover: oklch(60% 0.22 265);
+  --color-secondary: oklch(50% 0.03 260);
+  --color-secondary-foreground: oklch(98% 0.01 260);
+  --color-secondary-hover: oklch(45% 0.04 260);
+  --color-destructive: oklch(65% 0.25 25);
+  --color-destructive-foreground: oklch(98% 0.01 260);
+  --color-destructive-hover: oklch(60% 0.27 25);
+  --color-success: oklch(70% 0.2 145);
+  --color-success-foreground: oklch(98% 0.01 260);
+  --color-success-hover: oklch(65% 0.22 145);
+  --color-warning: oklch(75% 0.2 80);
+  --color-warning-foreground: oklch(98% 0.01 260);
+  --color-warning-hover: oklch(70% 0.22 80);
+  --color-border: oklch(22% 0.02 260);
+  --color-border-subtle: oklch(16.5% 0.02 260);
+  --color-ring: oklch(65% 0.2 265);
+  --color-ring-destructive: oklch(65% 0.25 25);
+}
+
+html,
+body {
+  @apply bg-background text-foreground min-w-dvh;
+}
+```
+
+### Create Routes
+
+- Ensure your app is running for TanStack Router Plugin to work...
+
+```
+npm run dev
+```
+
+1. Create `src/routes/index.tsx` for the Landing page
+2. Create `src/routes/login.tsx`, `src/routes/join.tsx`, `src/routes/_app/route.tsx` & `src/routes/_app/dashboard.tsx`
+3. Update `route.tsx` to return
+
+```tsx
+<Outlet />
+```
+
+4. Add `<Link />` between index, login and join routes
+
+### Finish Landing Page (Massive Dopamine Hit)
+
+Here we build the Landing page. Best course of action is follow the video to see how this is built. All of the code can be found on the course GitHub here: [TaskMaster](https://github.com/freedomdevelopercourse/TaskMaster)
 
 ## Step 4 - Authentication
 
