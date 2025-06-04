@@ -74,16 +74,17 @@ createRoot(document.getElementById('root')!).render(
 
 ### Create Supabase project
 
-1. Sign in with GitHub
-2. Create an Organization
-3. Create new project (save DB Password somewhere safe even though we won't need it)
-4. Acquire Supabase URL & Anon Key
+1. Navigate to [Supabase](https://supabase.com)
+2. Sign in with GitHub
+3. Create an Organization
+4. Create new project (save DB Password somewhere safe even though we won't need it)
+5. Acquire Supabase URL & Anon Key
 
 [Link to JS Supabase Docs](https://supabase.com/docs/reference/javascript/introduction)
 
 ### Create ENV File with URL & Anon Key
 
-- Create `.env` in the root of the project & add .env to .gitignore
+- Create `.env` in the root of the project & add `.env` to `.gitignore`
 - Be sure to prefix with VITE\_ so the client can access it
 
 ```
@@ -99,7 +100,7 @@ VITE_SUPABASE_ANON_KEY=your-anon-key
 npm install @supabase/supabase-js
 ```
 
-2. Update vite types to acknowledge env file. (vite-env.d.ts)
+2. Update vite types to acknowledge env file contents. `vite-env.d.ts`
 
 ```ts
 /// <reference types="vite/client" />
@@ -118,7 +119,7 @@ interface ImportMeta {
 }
 ```
 
-2. Export Client from src/api/Supabase.ts
+2. Export Client from `src/api/Supabase.ts`
 
 ```ts
 import { createClient } from '@supabase/supabase-js'
@@ -128,9 +129,9 @@ const supabase = createClient(import.meta.env.VITE_SUPABASE_URL, import.meta.env
 export default supabase
 ```
 
-3. Generate Types Script in package.json
+3. Generate Types Script in `package.json`
 
-- Update package.json scripts
+- Update `package.json` scripts
 
 ```
  "gen": "supabase gen types typescript --project-id *PROJECT_ID* > src/types/database.types.ts",
@@ -149,9 +150,8 @@ npm i -D supabase
 npx supabase login
 ```
 
-- Create types folder inside src folder
-  Otherwise it can't find the types folder to generate them here: src/types/database.types.ts
-  as seen in the script
+- Create `src/types` folder. Otherwise `npm run gen` can't find the types folder to generate them: `src/types/database.types.ts`
+  as seen in the `package.json` script
 
 - Generate the types
 
@@ -159,7 +159,7 @@ npx supabase login
 npm run gen
 ```
 
-- Add Database type to Supabase.ts
+- Add Database type to `Supabase.ts`
 
 ```ts
 import { createClient } from '@supabase/supabase-js'
