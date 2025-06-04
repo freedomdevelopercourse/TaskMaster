@@ -284,9 +284,8 @@ Here is an overview of building a Landing Page:
 
 1. Nav Bar
 2. Hero
-3. About/Etc
-4. Testimonials
-5. Footer
+3. About/Features/Testimonials/Etc
+4. Footer
 
 ## Step 4 - Authentication
 
