@@ -712,9 +712,42 @@ function RouteComponent() {
 
 ## Step 5 - Create DB Schema
 
-- Create Boards Table
+### Create Tables
 
-- Create Tasks Table with Relation to the Boards Table ID
+- users (automatically created by supabase)
+
+  - id - uuid
+  - email - text
+
+- boards
+
+  - id - uuid
+  - created_at - timestampz
+  - name - text
+
+- user_boards
+
+  - id - uuid
+  - created_at - timestampz
+  - user_id - uuid (foreign key to users.id)
+  - board_id - uuid (foreign key to boards.id)
+
+- user_board_invites
+
+  - id - uuid
+  - created_at - timestampz
+  - board_id - uuid (foreign key to boards.id)
+  - email - text
+  - name - text
+
+- board_tasks
+
+  - id - uuid
+  - created_at - timestampz
+  - board_id - uuid (foreign key to boards.id)
+  - column - ColumnEnum
+  - title - text
+  - description - text
 
 ## Step 6 - Build Kanban board with Mock Data
 
