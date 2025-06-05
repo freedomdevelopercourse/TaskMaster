@@ -289,18 +289,54 @@ Here is an overview of building a Landing Page:
 
 ## Step 4 - Authentication
 
+### Create Auth Layout Route
+
+1. Create `routes/src/routes/_auth/route.tsx`
+2. Move `login.tsx` & `join.tsx` into the `_auth` folder.
+3. Center an
+
+```tsx
+<Outlet />
+```
+
+in the route.
+
 ### Create Join Page
 
 1. In `join.tsx`, create a form that takes an email & 2 passwords & 'Join' button
-2. Ensure the fields are valid & passwords match
-3. Call Supabase
-4. Show any errors that occur
-5. 'Already have an account?' button
-6. Improve Styling
+2. 'Already have an account?' button
+3. Improve Styling
 
 ### Componentize into Auth Card
 
-Here we create a new `src/features` folder. This will organize code that is only for a specific feature (`src/features/auth`)
+First, we create a `src/components` folder. This is were we will start componentizing our main components with tailwind variants, so we don't have to copy styles everywhere!
+
+1. Install clsx, tailwind-merge & tailwind-variants
+
+```
+npm i clsx tailwind-merge tailwind-variants
+```
+
+2. Create `cn.ts` in `src/utils`
+
+```ts
+import { clsx, type ClassValue } from 'clsx'
+import { twMerge } from 'tailwind-merge'
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs))
+}
+```
+
+3. Create `src/components/Input.tsx`
+
+4. Create `src/components/Button.tsx`
+
+5. Update Landing page (`index.tsx`) to use the new button
+
+6. Update `join.tsx` to use the new Input & Button
+
+Next, we create a new `src/features` folder. This will organize code that is only for a specific feature (`src/features/auth`)
 
 1. Create `src/features/auth/components/AuthCard.tsx`
 2. Move Join form into this component

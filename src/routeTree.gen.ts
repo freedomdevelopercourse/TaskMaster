@@ -11,23 +11,17 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as LoginImport } from './routes/login'
-import { Route as JoinImport } from './routes/join'
+import { Route as AuthRouteImport } from './routes/_auth/route'
 import { Route as AppRouteImport } from './routes/_app/route'
 import { Route as IndexImport } from './routes/index'
+import { Route as AuthLoginImport } from './routes/_auth/login'
+import { Route as AuthJoinImport } from './routes/_auth/join'
 import { Route as AppDashboardImport } from './routes/_app/dashboard'
 
 // Create/Update Routes
 
-const LoginRoute = LoginImport.update({
-  id: '/login',
-  path: '/login',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const JoinRoute = JoinImport.update({
-  id: '/join',
-  path: '/join',
+const AuthRouteRoute = AuthRouteImport.update({
+  id: '/_auth',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -40,6 +34,18 @@ const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRoute,
+} as any)
+
+const AuthLoginRoute = AuthLoginImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => AuthRouteRoute,
+} as any)
+
+const AuthJoinRoute = AuthJoinImport.update({
+  id: '/join',
+  path: '/join',
+  getParentRoute: () => AuthRouteRoute,
 } as any)
 
 const AppDashboardRoute = AppDashboardImport.update({
@@ -66,18 +72,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppRouteImport
       parentRoute: typeof rootRoute
     }
-    '/join': {
-      id: '/join'
-      path: '/join'
-      fullPath: '/join'
-      preLoaderRoute: typeof JoinImport
-      parentRoute: typeof rootRoute
-    }
-    '/login': {
-      id: '/login'
-      path: '/login'
-      fullPath: '/login'
-      preLoaderRoute: typeof LoginImport
+    '/_auth': {
+      id: '/_auth'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRoute
     }
     '/_app/dashboard': {
@@ -86,6 +85,20 @@ declare module '@tanstack/react-router' {
       fullPath: '/dashboard'
       preLoaderRoute: typeof AppDashboardImport
       parentRoute: typeof AppRouteImport
+    }
+    '/_auth/join': {
+      id: '/_auth/join'
+      path: '/join'
+      fullPath: '/join'
+      preLoaderRoute: typeof AuthJoinImport
+      parentRoute: typeof AuthRouteImport
+    }
+    '/_auth/login': {
+      id: '/_auth/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof AuthLoginImport
+      parentRoute: typeof AuthRouteImport
     }
   }
 }
@@ -104,52 +117,72 @@ const AppRouteRouteWithChildren = AppRouteRoute._addFileChildren(
   AppRouteRouteChildren,
 )
 
+interface AuthRouteRouteChildren {
+  AuthJoinRoute: typeof AuthJoinRoute
+  AuthLoginRoute: typeof AuthLoginRoute
+}
+
+const AuthRouteRouteChildren: AuthRouteRouteChildren = {
+  AuthJoinRoute: AuthJoinRoute,
+  AuthLoginRoute: AuthLoginRoute,
+}
+
+const AuthRouteRouteWithChildren = AuthRouteRoute._addFileChildren(
+  AuthRouteRouteChildren,
+)
+
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '': typeof AppRouteRouteWithChildren
-  '/join': typeof JoinRoute
-  '/login': typeof LoginRoute
+  '': typeof AuthRouteRouteWithChildren
   '/dashboard': typeof AppDashboardRoute
+  '/join': typeof AuthJoinRoute
+  '/login': typeof AuthLoginRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '': typeof AppRouteRouteWithChildren
-  '/join': typeof JoinRoute
-  '/login': typeof LoginRoute
+  '': typeof AuthRouteRouteWithChildren
   '/dashboard': typeof AppDashboardRoute
+  '/join': typeof AuthJoinRoute
+  '/login': typeof AuthLoginRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
   '/_app': typeof AppRouteRouteWithChildren
-  '/join': typeof JoinRoute
-  '/login': typeof LoginRoute
+  '/_auth': typeof AuthRouteRouteWithChildren
   '/_app/dashboard': typeof AppDashboardRoute
+  '/_auth/join': typeof AuthJoinRoute
+  '/_auth/login': typeof AuthLoginRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '' | '/join' | '/login' | '/dashboard'
+  fullPaths: '/' | '' | '/dashboard' | '/join' | '/login'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '' | '/join' | '/login' | '/dashboard'
-  id: '__root__' | '/' | '/_app' | '/join' | '/login' | '/_app/dashboard'
+  to: '/' | '' | '/dashboard' | '/join' | '/login'
+  id:
+    | '__root__'
+    | '/'
+    | '/_app'
+    | '/_auth'
+    | '/_app/dashboard'
+    | '/_auth/join'
+    | '/_auth/login'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AppRouteRoute: typeof AppRouteRouteWithChildren
-  JoinRoute: typeof JoinRoute
-  LoginRoute: typeof LoginRoute
+  AuthRouteRoute: typeof AuthRouteRouteWithChildren
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AppRouteRoute: AppRouteRouteWithChildren,
-  JoinRoute: JoinRoute,
-  LoginRoute: LoginRoute,
+  AuthRouteRoute: AuthRouteRouteWithChildren,
 }
 
 export const routeTree = rootRoute
@@ -164,8 +197,7 @@ export const routeTree = rootRoute
       "children": [
         "/",
         "/_app",
-        "/join",
-        "/login"
+        "/_auth"
       ]
     },
     "/": {
@@ -177,15 +209,24 @@ export const routeTree = rootRoute
         "/_app/dashboard"
       ]
     },
-    "/join": {
-      "filePath": "join.tsx"
-    },
-    "/login": {
-      "filePath": "login.tsx"
+    "/_auth": {
+      "filePath": "_auth/route.tsx",
+      "children": [
+        "/_auth/join",
+        "/_auth/login"
+      ]
     },
     "/_app/dashboard": {
       "filePath": "_app/dashboard.tsx",
       "parent": "/_app"
+    },
+    "/_auth/join": {
+      "filePath": "_auth/join.tsx",
+      "parent": "/_auth"
+    },
+    "/_auth/login": {
+      "filePath": "_auth/login.tsx",
+      "parent": "/_auth"
     }
   }
 }
