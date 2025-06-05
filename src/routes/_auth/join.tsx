@@ -1,4 +1,6 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
+import Input from '../../components/Input'
+import Button from '../../components/Button'
 
 export const Route = createFileRoute('/_auth/join')({
   component: RouteComponent,
@@ -14,15 +16,12 @@ function RouteComponent() {
           e.preventDefault()
         }}
       >
-        <input type="email" placeholder="Email" required className="py-2 px-3 border-foreground-subtle rounded-lg border" />
-        <input type="password" placeholder="Password" required className="py-2 px-3 border-foreground-subtle rounded-lg border" />
-        <input type="password" placeholder="Confirm Password" required className="py-2 px-3 border-foreground-subtle rounded-lg border" />
-        <button
-          type="submit"
-          className="bg-primary transition-colors hover:bg-primary-hover text-primary-foreground w-fit px-5 rounded-lg py-1.5 ml-auto"
-        >
+        <Input type="email" placeholder="Email" required />
+        <Input type="password" placeholder="Password" required />
+        <Input type="password" placeholder="Confirm Password" required />
+        <Button type="submit" className="ml-auto">
           Join
-        </button>
+        </Button>
       </form>
       <div className="flex items-center">
         <div className="border-foreground-subtle border-b flex-1" />

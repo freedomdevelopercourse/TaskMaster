@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
+import Button from '../components/Button'
 
 export const Route = createFileRoute('/')({
   component: RouteComponent,
@@ -21,15 +22,14 @@ function Nav() {
   return (
     <header className="flex h-[var(--header-height)] items-center justify-between px-4 bg-background-tertiary border-b border-border">
       <h1 className="text-2xl font-bold">TaskMaster</h1>
-      <nav>
-        <Link
-          to="/login"
-          className="px-4 py-2 text-secondary-foreground bg-secondary rounded hover:bg-secondary-hover transition-colors mr-2"
-        >
-          Login
+      <nav className="flex items-center gap-4">
+        <Link to="/login">
+          <Button color="secondary" size="small">
+            Login
+          </Button>
         </Link>
-        <Link to="/join" className="px-4 py-2 text-primary-foreground bg-primary rounded hover:bg-primary-hover transition-colors">
-          Join
+        <Link to="/join">
+          <Button size="small">Join</Button>
         </Link>
       </nav>
     </header>
@@ -43,8 +43,8 @@ function Hero() {
       <img src="/images/TaskMasterBranding.png" alt="Logo" className="size-[200px]" />
 
       <p className="text-lg text-foreground-muted mb-4">Your ultimate task management solution</p>
-      <Link to="/login" className="px-6 py-3 bg-primary text-primary-foreground rounded hover:bg-primary-hover transition-colors">
-        Get Started
+      <Link to="/login">
+        <Button size="large">Get Started</Button>
       </Link>
     </div>
   )
