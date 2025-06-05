@@ -595,6 +595,121 @@ We need to make sure the user is logged in to access certain routes. This is als
 
 1. Create a `User.ts` file in `src/api/queries`
 
+```ts
+import { queryOptions } from '@tanstack/react-query'
+import supabase from '@/api/Supabase'
+
+export const UserQueryOptions = queryOptions({
+  queryKey: ['user'],
+  async queryFn() {
+    const {
+      data: { user },
+    } = await supabase.auth.getUser()
+    return user
+  },
+})
+```
+
+2. In the `_auth/route.tsx` file, we will add a redirect to dashboard if already logged in.
+
+```ts
+export const Route = createFileRoute('/_auth')({
+  async loader({ context: { queryClient } }) {
+    const user = await queryClient.fetchQuery(UserQueryOptions)
+    if (user) return redirect({ to: '/dashboard' })
+  },
+})
+```
+
+3. Do a reverse logic in `_app/route.tsx` to redirect to '/'
+
+```ts
+export const Route = createFileRoute('/_app')({
+  async loader({ context: { queryClient } }) {
+    const user = await queryClient.fetchQuery(UserQueryOptions)
+    if (!user) return redirect({ to: '/' })
+  },
+})
+```
+
+4. In the `index.tsx` landing page, we will ensure the query in the loader, then use that query to either show Join/Login buttons or an Enter Dashboard button.
+
+```ts
+export const Route = createFileRoute('/')({
+  async loader({ context: { queryClient } }) {
+    await queryClient.ensureQueryData(UserQueryOptions)
+  },
+})
+```
+
+```tsx
+function Nav() {
+  const { data: user } = useSuspenseQuery(UserQueryOptions)
+
+  return (
+    //...
+        {user ? (
+          <>
+            <Link to="/dashboard">
+              <Button size="small">Enter Dashboard</Button>
+            </Link>
+          </>
+        ) : (
+          <>
+            <Link to="/login">
+              <Button color="secondary" size="small">
+                Login
+              </Button>
+            </Link>
+            <Link to="/join">
+              <Button size="small">Join</Button>
+            </Link>
+          </>
+        )}
+    //...
+  )
+}
+
+function Hero() {
+  const { data: user } = useSuspenseQuery(UserQueryOptions)
+
+  return (
+    //...
+      <Link to={user ? '/dashboard' : '/login'}>
+        <Button size="large">{user ? 'Go to Dashboard' : 'Get Started'}</Button>
+      </Link>
+    //...
+  )
+}
+```
+
+5. Add logout button to the Dashboard. Should clear queryClient & redirect too
+
+```tsx
+function RouteComponent() {
+  const queryClient = useQueryClient()
+  const navigate = useNavigate()
+
+  const handleLogout = useCallback(async () => {
+    const { error } = await supabase.auth.signOut()
+    if (error) return alert(error.message)
+    queryClient.clear()
+    navigate({
+      to: '/',
+      replace: true,
+    })
+  }, [navigate, queryClient])
+
+  return (
+    <div>
+      Hello "/_app/dashboard"!
+      <br />
+      <Button onClick={handleLogout}>Logout</Button>
+    </div>
+  )
+}
+```
+
 ## Step 5 - Build Kanban board with Mock Data
 
 - Install DnD Kit

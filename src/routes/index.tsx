@@ -1,7 +1,12 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
 import Button from '../components/Button'
+import { UserQueryOptions } from '@/api/queries/User'
+import { useSuspenseQuery } from '@tanstack/react-query'
 
 export const Route = createFileRoute('/')({
+  async loader({ context: { queryClient } }) {
+    await queryClient.ensureQueryData(UserQueryOptions)
+  },
   component: RouteComponent,
 })
 
@@ -19,32 +24,46 @@ function RouteComponent() {
 }
 
 function Nav() {
+  const { data: user } = useSuspenseQuery(UserQueryOptions)
+
   return (
     <header className="flex h-[var(--header-height)] items-center justify-between px-4 bg-background-tertiary border-b border-border">
       <h1 className="text-2xl font-bold">TaskMaster</h1>
       <nav className="flex items-center gap-4">
-        <Link to="/login">
-          <Button color="secondary" size="small">
-            Login
-          </Button>
-        </Link>
-        <Link to="/join">
-          <Button size="small">Join</Button>
-        </Link>
+        {user ? (
+          <>
+            <Link to="/dashboard">
+              <Button size="small">Enter Dashboard</Button>
+            </Link>
+          </>
+        ) : (
+          <>
+            <Link to="/login">
+              <Button color="secondary" size="small">
+                Login
+              </Button>
+            </Link>
+            <Link to="/join">
+              <Button size="small">Join</Button>
+            </Link>
+          </>
+        )}
       </nav>
     </header>
   )
 }
 
 function Hero() {
+  const { data: user } = useSuspenseQuery(UserQueryOptions)
+
   return (
     <div className="flex flex-col items-center justify-center gap-4 bg-background-primary">
       <h1 className="text-4xl font-bold">Welcome to TaskMaster</h1>
       <img src="/images/TaskMasterBranding.png" alt="Logo" className="size-[200px]" />
 
       <p className="text-lg text-foreground-muted mb-4">Your ultimate task management solution</p>
-      <Link to="/login">
-        <Button size="large">Get Started</Button>
+      <Link to={user ? '/dashboard' : '/login'}>
+        <Button size="large">{user ? 'Go to Dashboard' : 'Get Started'}</Button>
       </Link>
     </div>
   )
