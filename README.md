@@ -289,11 +289,30 @@ Here is an overview of building a Landing Page:
 
 ## Step 4 - Authentication
 
-- Create Login & Signup page
+### Create Join Page
 
-- Add Email, Google & Apple Auth
+1. In `join.tsx`, create a form that takes an email & 2 passwords & 'Join' button
+2. Ensure the fields are valid & passwords match
+3. Call Supabase
+4. Show any errors that occur
+5. 'Already have an account?' button
+6. Improve Styling
 
-- Logout button on Dashboard
+### Componentize into Auth Card
+
+Here we create a new `src/features` folder. This will organize code that is only for a specific feature (`src/features/auth`)
+
+1. Create `src/features/auth/components/AuthCard.tsx`
+2. Move Join form into this component
+3. Add prop to distinguish between join/login
+4. Add conditionals to support login as well.
+5. Use on `login.tsx` & `join.tsx`
+
+### Supabase Email/Password Auth
+
+Here we add the actual login/join functionality after submitting the form
+
+### User Query & Logout
 
 ## Step 5 - Build Kanban board with Mock Data
 
