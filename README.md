@@ -406,13 +406,67 @@ Next, we create a new `src/features` folder. This will organize code that is onl
 
 1. Create `src/features/auth/components/AuthCard.tsx`
 2. Move Join form into this component
-3. Add prop to distinguish between join/login
-4. Add conditionals to support login as well.
-5. Use on `login.tsx` & `join.tsx`
+3. Add `@` import alias
+
+Add `"compilerOptions"` to `tsconfig.json`
+
+```json
+"compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  }
+```
+
+Add within the already defined `"compilerOptions"` of `tsconfig.app.json`
+
+```json
+"baseUrl": ".",
+"paths": {
+  "@/*": ["./src/*"]
+}
+```
+
+Install `node` types
+
+```
+npm install -D @types/node
+```
+
+Update `vite.config.ts` with `resolve.alias`
+
+```ts
+import { defineConfig } from 'vite'
+import { TanStackRouterVite } from '@tanstack/router-plugin/vite'
+import react from '@vitejs/plugin-react-swc'
+import tailwindcss from '@tailwindcss/vite'
+import path from 'path'
+
+export default defineConfig({
+  plugins: [TanStackRouterVite({ target: 'react', autoCodeSplitting: true }), react(), tailwindcss()],
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, './src'),
+    },
+  },
+})
+```
+
+Update the imports of the components to use the `@`
+
+```ts
+import Button from '@/components/Button'
+import Input from '@/components/Input'
+```
+
+4. Add prop to distinguish between join/login
+5. Add conditionals to support login as well.
+6. Use on `login.tsx` & `join.tsx`
 
 ### Supabase Email/Password Auth
 
-Here we add the actual login/join functionality after submitting the form
+Here we add the actual login/join functionality after submitting the form.
 
 ### User Query & Logout
 
