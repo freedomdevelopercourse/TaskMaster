@@ -3,7 +3,7 @@ import Input from '@/components/Input'
 import { Link } from '@tanstack/react-router'
 import { useCallback, type FormEventHandler } from 'react'
 
-export default function AuthCard({ type, onSubmit }: AuthCardProps) {
+export default function AuthCard({ type, defaultEmail, onSubmit }: AuthCardProps) {
   const handleSubmit = useCallback<FormEventHandler<HTMLFormElement>>(
     (e) => {
       e.preventDefault()
@@ -24,7 +24,7 @@ export default function AuthCard({ type, onSubmit }: AuthCardProps) {
     <div className="flex flex-col gap-4 p-4 bg-background-tertiary rounded-lg shadow-md w-full max-w-sm md:max-w-md mx-auto">
       <h1 className="text-3xl font-semibold mb-4">{type === 'login' ? 'Login' : 'Join'}</h1>
       <form className="flex flex-col gap-3" onSubmit={handleSubmit}>
-        <Input name="email" type="email" placeholder="Email" required />
+        <Input name="email" type="email" placeholder="Email" required defaultValue={defaultEmail} />
         <Input name="password" type="password" placeholder="Password" required />
         {type === 'join' && <Input name="confirmPassword" type="password" placeholder="Confirm Password" required />}
         <Button type="submit" className="ml-auto">
@@ -47,6 +47,7 @@ export default function AuthCard({ type, onSubmit }: AuthCardProps) {
 }
 
 interface AuthCardProps {
+  defaultEmail?: string
   type: 'login' | 'join'
   onSubmit: (email: string, password: string) => void
 }

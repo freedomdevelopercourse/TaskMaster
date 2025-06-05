@@ -468,7 +468,132 @@ import Input from '@/components/Input'
 
 Here we add the actual login/join functionality after submitting the form.
 
-### User Query & Logout
+1. In `join.tsx` we will implement AuthCard's onSubmit to create an account with Supabase, then direct them to the login page.
+
+```tsx
+function RouteComponent() {
+  const navigate = useNavigate()
+
+  const handleJoin = useCallback(
+    async (email: string, password: string) => {
+      const { error } = await supabase.auth.signUp({
+        email,
+        password,
+      })
+      if (error) return alert(error.message)
+
+      alert('Check your email for the confirmation link!')
+
+      navigate({
+        to: '/login',
+        search: { email },
+      })
+    },
+    [navigate]
+  )
+
+  return <AuthCard type="join" onSubmit={handleJoin} />
+}
+```
+
+2. Let's implement the login version
+
+```tsx
+function RouteComponent() {
+  const navigate = useNavigate()
+
+  const handleLogin = useCallback(
+    async (email: string, password: string) => {
+      const { error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      })
+      if (error) return alert(error.message)
+
+      navigate({
+        to: '/dashboard',
+        replace: true,
+      })
+    },
+    [navigate]
+  )
+  return <AuthCard type="login" onSubmit={handleLogin} />
+}
+```
+
+3. Let's autofill login email when joining!
+
+First, we need to install `zod` so we can do clean validation.
+
+```
+npm i zod
+```
+
+We are now going to create a SearchSchema in `login.tsx`
+
+```ts
+const SearchSchema = z.object({
+  email: z.string().email().optional(),
+})
+```
+
+Fully implemented will look like this
+
+```tsx
+export const Route = createFileRoute('/_auth/login')({
+  validateSearch(search) {
+    return SearchSchema.parse(search)
+  },
+  component: RouteComponent,
+})
+
+function RouteComponent() {
+  const { email } = Route.useSearch()
+  const navigate = useNavigate()
+
+  const handleLogin = useCallback(
+    async (email: string, password: string) => {
+      const { error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      })
+      if (error) return alert(error.message)
+
+      navigate({
+        to: '/dashboard',
+        replace: true,
+      })
+    },
+    [navigate]
+  )
+  return <AuthCard type="login" onSubmit={handleLogin} defaultEmail={email} />
+}
+
+const SearchSchema = z.object({
+  email: z.string().email().optional(),
+})
+```
+
+And some edits to `AuthCard.tsx`
+
+```tsx
+interface AuthCardProps {
+  defaultEmail?: string
+  type: 'login' | 'join'
+  onSubmit: (email: string, password: string) => void
+}
+export default function AuthCard({ type, defaultEmail, onSubmit }: AuthCardProps) {
+  return <Input name="email" type="email" placeholder="Email" required defaultValue={defaultEmail} />
+}
+```
+
+TEST!
+
+### User Query, Redirects & Logout
+
+We need to make sure the user is logged in to access certain routes. This is also where we will introduce our first query.
+
+1. Create a `User.ts` file in `src/api/queries`
 
 ## Step 5 - Build Kanban board with Mock Data
 
