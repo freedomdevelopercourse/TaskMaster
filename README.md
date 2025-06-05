@@ -710,7 +710,13 @@ function RouteComponent() {
 }
 ```
 
-## Step 5 - Build Kanban board with Mock Data
+## Step 5 - Create DB Schema
+
+- Create Boards Table
+
+- Create Tasks Table with Relation to the Boards Table ID
+
+## Step 6 - Build Kanban board with Mock Data
 
 - Install DnD Kit
 
@@ -719,12 +725,6 @@ function RouteComponent() {
 - Create Context, Reducer & CRUD
 
 - Polish Kanban Board functionality
-
-## Step 6 - Create DB Schema
-
-- Create Boards Table
-
-- Create Tasks Table with Relation to the Boards Table ID
 
 ## Step 7 - Create API Client Wrapper for required functionality
 
