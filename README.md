@@ -721,20 +721,20 @@ function RouteComponent() {
 
 - boards
 
-  - id - uuid
+  - id - uuid (primary)
   - created_at - timestampz
   - name - text
 
 - user_boards
 
-  - id - uuid
+  - id - uuid (primary)
   - created_at - timestampz
   - user_id - uuid (foreign key to users.id)
   - board_id - uuid (foreign key to boards.id)
 
 - user_board_invites
 
-  - id - uuid
+  - id - uuid (primary)
   - created_at - timestampz
   - board_id - uuid (foreign key to boards.id)
   - email - text
@@ -742,12 +742,12 @@ function RouteComponent() {
 
 - board_tasks
 
-  - id - uuid
+  - id - uuid (primary)
   - created_at - timestampz
   - board_id - uuid (foreign key to boards.id)
   - column - ColumnEnum
   - title - text
-  - description - text
+  - description - text (nullable)
 
 ## Step 6 - Build Kanban board with Mock Data
 
