@@ -722,32 +722,51 @@ function RouteComponent() {
 - boards
 
   - id - uuid (primary)
-  - created_at - timestampz
+  - created_at - timestamptz
   - name - text
 
 - user_boards
 
   - id - uuid (primary)
-  - created_at - timestampz
-  - user_id - uuid (foreign key to users.id)
+  - created_at - timestamptz
+  - user_id - uuid (foreign key to users.id) (defaulted to auth.uid())
   - board_id - uuid (foreign key to boards.id)
 
 - user_board_invites
 
   - id - uuid (primary)
-  - created_at - timestampz
+  - created_at - timestamptz
   - board_id - uuid (foreign key to boards.id)
+  - inviter_user_id - uuid (foreign key to users.id) (defaulted to auth.uid())
   - email - text
   - name - text
 
 - board_tasks
 
   - id - uuid (primary)
-  - created_at - timestampz
+  - created_at - timestamptz
   - board_id - uuid (foreign key to boards.id)
   - column - ColumnEnum
   - title - text
   - description - text (nullable)
+
+Note, by adding more properties such as, user_id to boards, you can add more functionality to the application, i.e. only owner can delete a board. You can also add more tables such as board settings, board privileges, etc to stitch together more functionality. In future projects we will create more advanced data base structures. Even so, I recommend (once you complete this) to add some more of your own features to this application to increase your comprehension of the concepts and solidify the learning in a very real way. Good luck!
+
+### Row Level Security
+
+1. Only SELECT `boards` that you have a `user_boards` record with your `user.id` associated with.
+2. Only SELECT `board_tasks` that have a `user_boards` record with your `user.id` associated with.
+3. Only SELECT `user_boards` that have your `user.id` associated with it.
+4. Only SELECT `user_board_invites` that have your `user.email` or your `user.id` associated with it.
+5. INSERT `boards`
+6. INSERT `user_boards`
+7. INSERT `user_board_invites` with your board id's in your `user_boards`
+8. INSERT `board_tasks` with your board id's in your `user_boards`
+9. UPDATE `boards` that have a `user_boards` record with your `user.id` associated with.
+10. UPDATE `board_tasks` that have a `user_boards` record with your `user.id` associated with.
+11. DELETE `boards` that have a `user_boards` record with your `user.id` associated with. (Should cascade and delete the `user_boards` record)
+12. DELETE `board_tasks` that have a `user_boards` record with your `user.id` associated with.
+13. DELETE `user_board_invites` that have your `user.email` or your `user.id` associated with it.
 
 ## Step 6 - Build Kanban board with Mock Data
 
